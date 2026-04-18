@@ -370,6 +370,18 @@
             });
 
             const data = await response.json();
+            
+            // Check for API errors
+            if (data.error) {
+                throw new Error(data.error.message || 'API Error occurred');
+            }
+            
+            // Ensure we have candidates
+            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts[0]) {
+                console.error('Unexpected API response:', data);
+                throw new Error('Invalid response format from API');
+            }
+            
             const botResponse = data.candidates[0].content.parts[0].text;
             removeLoadingIndicator();
             displayMessage(botResponse, 'bot');
@@ -392,6 +404,8 @@
         if (loadingMsg) loadingMsg.remove();
     }
 
+    // Temporarily disabled - backend migration in progress
+    /*
     sendBtn.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -403,6 +417,12 @@
     window.addEventListener('load', () => {
         renderArticles();
         displayMessage('👋 Hi! I\'m your AI Testing Assistant. Ask me about AI testing, test automation, SDET practices, or quality assurance!', 'bot');
+    });
+    */
+
+    window.addEventListener('load', () => {
+        renderArticles();
+        displayMessage('🔧 Chatbot temporarily offline - upgrading for better security. Check back soon!', 'bot');
     });
 </script>
 </body>

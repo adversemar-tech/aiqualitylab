@@ -57,10 +57,19 @@ async function sendMessage() {
     }
     
     const data = await response.json();
-    const botResponse = data.candidates[0].content.parts[0].text;
-    
-    // Remove loading indicator and display actual response
-    removeLoadingIndicator();
+            
+            // Check for API errors
+            if (data.error) {
+                throw new Error(data.error.message || 'API Error occurred');
+            }
+            
+            // Ensure we have candidates
+            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts[0]) {
+                console.error('Unexpected API response:', data);
+                throw new Error('Invalid response format from API');
+            }
+            
+            const botResponse = data.candidates[0].content.parts[0].text;
     displayMessage(botResponse, 'bot');
     
   } catch (error) {
@@ -87,16 +96,23 @@ function removeLoadingIndicator() {
   }
 }
 
-// Event listeners
-sendBtn.addEventListener('click', sendMessage);
-userInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+// Temporarily disabled - backend migration in progress
+    /*
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
 
-// Initial greeting
-window.addEventListener('load', () => {
-  displayMessage('👋 Hi! I\'m your AI Testing Assistant. Ask me anything about AI testing, test automation, SDET practices, or quality assurance!', 'bot');
+    // Initial greeting
+    window.addEventListener('load', () => {
+        displayMessage('👋 Hi! I\'m your AI Testing Assistant. Ask me anything about AI testing, test automation, SDET practices, or quality assurance!', 'bot');
+    });
+    */
+    
+    // Show offline message instead
+    window.addEventListener('load', () => {
+        displayMessage('🔧 Chatbot temporarily offline - upgrading for better security. Check back soon!', 'bot');
 });
