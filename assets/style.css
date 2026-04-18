@@ -569,7 +569,7 @@ body {
 }
 
 .gratitude-container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -581,44 +581,38 @@ body {
     font-weight: 700;
 }
 
-.gratitude-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
-}
-
-.gratitude-card {
+.father-tribute {
     background: white;
-    padding: 40px;
+    padding: 50px;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
     border-top: 4px solid var(--accent);
-    text-align: center;
-    transition: var(--transition);
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 50px;
+    align-items: center;
 }
 
-.gratitude-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+.father-photo {
+    width: 260px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(26, 79, 122, 0.25);
+    margin: 0 auto;
 }
 
-.gratitude-icon {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 20px;
-}
-
-.gratitude-card h3 {
-    font-size: 22px;
+.father-content h3 {
+    font-size: 32px;
     color: var(--primary);
-    margin: 0 0 15px 0;
+    margin: 0 0 25px 0;
     font-weight: 700;
 }
 
-.gratitude-card p {
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--text-light);
+.father-content p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text);
     margin: 0;
 }
 
@@ -632,13 +626,24 @@ body {
         margin-bottom: 40px;
     }
 
-    .gratitude-grid {
+    .father-tribute {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 30px;
+        padding: 30px;
     }
 
-    .gratitude-card {
-        padding: 30px;
+    .father-photo {
+        width: 100%;
+        height: 300px;
+    }
+
+    .father-content h3 {
+        font-size: 24px;
+    }
+
+    .father-content p {
+        font-size: 14px;
+        line-height: 1.8;
     }
 }
 
