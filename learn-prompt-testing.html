@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Prompt Testing - AI Quality Lab</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .learn-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .learn-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .learn-header h1 {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .learn-header p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Lessons Tab */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 191, 165, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .lesson-card.completed::before {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .lesson-card h3 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+
+        .lesson-card p {
+            color: var(--text-light);
+            margin: 0 0 15px 0;
+            line-height: 1.6;
+        }
+
+        .lesson-level {
+            display: inline-block;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, var(--accent), #00d4aa);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Practice Tab */
+        .practice-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 191, 165, 0.1);
+        }
+
+        .practice-section {
+            margin-bottom: 40px;
+        }
+
+        .practice-section h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, #e0f7ff, #f0e7ff);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-box strong {
+            color: var(--primary);
+        }
+
+        .prompt-input-group {
+            margin-bottom: 20px;
+        }
+
+        .prompt-input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .prompt-input-group textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        .prompt-input-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.1);
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--accent), #00d4aa);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 191, 165, 0.4);
+        }
+
+        .feedback-box {
+            background: #f5f5f5;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .feedback-score {
+            display: inline-block;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .feedback-box h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .feedback-box .strengths {
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+
+        .feedback-box .improvements {
+            padding: 15px;
+            background: #fff3e0;
+            border-radius: 6px;
+            color: #e65100;
+        }
+
+        /* Quiz Tab */
+        .quiz-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 191, 165, 0.1);
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #fafbfc, #f5f7fa);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-card h4 {
+            color: var(--primary);
+            margin: 0 0 20px 0;
+            font-size: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(0, 191, 165, 0.05);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .results-box {
+            background: linear-gradient(135deg, #e8f5e9, #e0f7ff);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-box.show {
+            display: block;
+        }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .results-message {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 191, 165, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 191, 165, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Lesson Modal */
+        .lesson-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lesson-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .lesson-modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lesson-modal-content h2 {
+            color: var(--primary);
+            margin: 0 0 20px 0;
+            font-size: 28px;
+        }
+
+        .lesson-modal-content .lesson-content {
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .lesson-modal-content .lesson-content h3 {
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .lesson-modal-content .lesson-content p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .lesson-modal-content .lesson-content ul {
+            margin-bottom: 15px;
+            padding-left: 25px;
+        }
+
+        .lesson-modal-content .lesson-content li {
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        .lesson-example {
+            background: linear-gradient(135deg, #e0f7ff, #f0e7ff);
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            border-radius: 6px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            overflow-x: auto;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">AI Quality Lab</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="learn-prompt-testing.html">Learn</a>
+        <a href="about.html">About</a>
+        <a href="python-tutorials/python-basics.html">Python</a>
+        <a href="ai-testing/readme.html">AI Testing</a>
+        <a href="interview-questions/readme.html">Interview Qs</a>
+        <a href="projects/readme.html">Projects</a>
+    </nav>
+</header>
+
+<div class="learn-container">
+    <div class="learn-header">
+        <h1>📚 Master Prompt Testing</h1>
+        <p>Learn the art and science of crafting effective prompts for AI testing. From basics to advanced techniques.</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="lessons">📖 Lessons</button>
+        <button class="tab-btn" data-tab="practice">✏️ Practice</button>
+        <button class="tab-btn" data-tab="quiz">🎯 Quiz</button>
+    </div>
+
+    <!-- Lessons Tab -->
+    <div id="lessons" class="tab-content active">
+        <div class="lessons-grid">
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>1. Introduction to Prompt Testing</h3>
+                <p>Learn what prompt testing is and why it matters for AI quality assurance.</p>
+                <span class="lesson-level">Beginner</span>
+            </div>
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>2. Characteristics of Good Prompts</h3>
+                <p>Discover what makes a prompt effective and how to structure them for better results.</p>
+                <span class="lesson-level">Beginner</span>
+            </div>
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>3. Common Prompt Testing Mistakes</h3>
+                <p>Understand pitfalls in prompt design and how to avoid them.</p>
+                <span class="lesson-level">Beginner</span>
+            </div>
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>4. Advanced Prompt Techniques</h3>
+                <p>Master chain-of-thought, few-shot learning, and role-based prompting.</p>
+                <span class="lesson-level">Intermediate</span>
+            </div>
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>5. Prompt Testing Best Practices</h3>
+                <p>Learn industry best practices for comprehensive prompt evaluation.</p>
+                <span class="lesson-level">Intermediate</span>
+            </div>
+            <div class="lesson-card" onclick="showLesson(this)">
+                <h3>6. Evaluating Prompt Responses</h3>
+                <p>Techniques for assessing AI responses and identifying quality issues.</p>
+                <span class="lesson-level">Intermediate</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice Tab -->
+    <div id="practice" class="tab-content">
+        <div class="practice-container">
+            <div class="practice-section">
+                <h3>💡 Practice Exercise: Write Better Prompts</h3>
+                
+                <div class="scenario-box">
+                    <strong>Scenario:</strong> You need to test an AI model that generates Python code for data analysis. Write a prompt that will help you evaluate if the model generates correct, efficient, and well-documented code.
+                </div>
+
+                <div class="prompt-input-group">
+                    <label for="prompt-textarea">Write Your Prompt:</label>
+                    <textarea id="prompt-textarea" placeholder="Type your prompt here..."></textarea>
+                </div>
+
+                <button class="submit-btn" onclick="evaluatePrompt()">
+                    <span id="btn-text">Evaluate My Prompt</span>
+                    <span id="btn-loading" style="display:none;" class="loading"></span>
+                </button>
+
+                <div id="feedback-box" class="feedback-box">
+                    <div class="feedback-score" id="score">8.5/10</div>
+                    <div class="strengths">
+                        <h4>✅ Strengths:</h4>
+                        <p id="strengths-text"></p>
+                    </div>
+                    <div class="improvements">
+                        <h4>💡 Areas for Improvement:</h4>
+                        <p id="improvements-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Tab -->
+    <div id="quiz" class="tab-content">
+        <div class="quiz-container">
+            <h3>🎯 Test Your Knowledge</h3>
+            <div id="quiz-content"></div>
+        </div>
+    </div>
+</div>
+
+<div id="lesson-modal" class="lesson-modal">
+    <div class="lesson-modal-content">
+        <span class="close-modal" onclick="closeLesson()">&times;</span>
+        <h2 id="lesson-title"></h2>
+        <div id="lesson-content" class="lesson-content"></div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 AI Quality Lab</p>
+</footer>
+
+<script>
+    const GEMINI_API_KEY = 'AIzaSyDa3ZdZ-Lv9U4Nw07cjETFABHuoLyuTNjg';
+    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabName = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'quiz') {
+                initializeQuiz();
+            }
+        });
+    });
+
+    function showLesson(element) {
+        const title = element.querySelector('h3').textContent;
+        const levelText = element.querySelector('.lesson-level').textContent;
+        
+        const lessons = {
+            '1. Introduction to Prompt Testing': `
+                <h3>What is Prompt Testing?</h3>
+                <p>Prompt testing is the practice of systematically evaluating how an AI model responds to different inputs (prompts). It's a critical component of AI quality assurance.</p>
+                
+                <h3>Why is it Important?</h3>
+                <ul>
+                    <li><strong>Reliability:</strong> Ensures AI models produce consistent, accurate responses</li>
+                    <li><strong>Security:</strong> Identifies vulnerabilities and potential misuse</li>
+                    <li><strong>Quality:</strong> Validates model performance across different scenarios</li>
+                    <li><strong>User Experience:</strong> Ensures models behave as expected for end users</li>
+                </ul>
+
+                <h3>Key Concepts</h3>
+                <p><strong>Prompt:</strong> An input or instruction given to an AI model</p>
+                <p><strong>Response:</strong> The output generated by the AI model</p>
+                <p><strong>Test Case:</strong> A specific prompt designed to test a particular aspect of the model</p>
+
+                <h3>Real-World Example</h3>
+                <div class="lesson-example">
+                Test: "Translate 'Hello' to Spanish"
+                Expected: "Hola"
+                Actual: "Hola"
+                Status: ✓ PASS
+                </div>
+
+                <h3>What You'll Learn</h3>
+                <p>By completing this course, you'll be able to:</p>
+                <ul>
+                    <li>Write effective prompts for AI testing</li>
+                    <li>Identify edge cases and potential failures</li>
+                    <li>Evaluate AI response quality</li>
+                    <li>Follow industry best practices</li>
+                    <li>Use advanced prompting techniques</li>
+                </ul>
+            `,
+            '2. Characteristics of Good Prompts': `
+                <h3>Elements of Effective Prompts</h3>
+                <p>A good prompt should be:</p>
+                
+                <h3>1. Clear & Specific</h3>
+                <div class="lesson-example">
+                ❌ Bad: "Write code"
+                ✅ Good: "Write Python code to sort a list of integers in ascending order"
+                </div>
+
+                <h3>2. Context-Aware</h3>
+                <p>Provide necessary background information for the AI to understand what you need.</p>
+                <div class="lesson-example">
+                ❌ Bad: "Explain testing"
+                ✅ Good: "Explain AI model testing to a QA engineer with 5 years of experience"
+                </div>
+
+                <h3>3. Well-Structured</h3>
+                <ul>
+                    <li>Use clear formatting (bullet points, sections)</li>
+                    <li>Break complex requests into smaller parts</li>
+                    <li>Use numbered steps when order matters</li>
+                </ul>
+
+                <h3>4. Measurable</h3>
+                <p>Results should be verifiable and testable.</p>
+                <div class="lesson-example">
+                ✅ Good: "Generate exactly 3 test cases for login functionality, each with a specific edge case"
+                </div>
+
+                <h3>5. Role-Based (Optional but Powerful)</h3>
+                <div class="lesson-example">
+                "You are a senior QA engineer. Design test cases for an e-commerce checkout system."
+                </div>
+
+                <h3>Examples of Well-Written Prompts</h3>
+                <div class="lesson-example">
+                "Generate 5 test cases for a password validation function. Each test case should include: input, expected output, and test description. Consider edge cases like empty strings, special characters, and length limits."
+                </div>
+            `,
+            '3. Common Prompt Testing Mistakes': `
+                <h3>Pitfalls to Avoid</h3>
+
+                <h3>❌ Mistake 1: Vague Prompts</h3>
+                <div class="lesson-example">
+                Bad: "Test this"
+                Better: "Test the error handling of the login API with invalid credentials"
+                </div>
+
+                <h3>❌ Mistake 2: Too Much Information</h3>
+                <p>Overwhelming the model with unnecessary context can confuse it.</p>
+                <div class="lesson-example">
+                Bad: "I was born in 1990, I love coding, I work at a tech company, and I like coffee. Can you help me write code?"
+                Better: "Write Python code to read a CSV file and calculate the average of a column"
+                </div>
+
+                <h3>❌ Mistake 3: Ambiguous Requirements</h3>
+                <div class="lesson-example">
+                Bad: "Make this better"
+                Better: "Optimize this code for performance - reduce the time complexity from O(n²) to O(n)"
+                </div>
+
+                <h3>❌ Mistake 4: Not Testing Edge Cases</h3>
+                <p>Always consider boundary conditions, empty inputs, and unusual scenarios.</p>
+
+                <h3>❌ Mistake 5: Expecting Perfect Responses</h3>
+                <p>AI models aren't always perfect. Always validate and iterate on responses.</p>
+
+                <h3>✅ Best Practices Checklist</h3>
+                <ul>
+                    <li>☐ Is your prompt clear and specific?</li>
+                    <li>☐ Did you provide necessary context?</li>
+                    <li>☐ Are constraints and limitations specified?</li>
+                    <li>☐ Can the output be verified or measured?</li>
+                    <li>☐ Have you considered edge cases?</li>
+                </ul>
+            `,
+            '4. Advanced Prompt Techniques': `
+                <h3>Level Up Your Prompting</h3>
+
+                <h3>🔗 Technique 1: Chain-of-Thought</h3>
+                <p>Ask the model to explain its reasoning step-by-step.</p>
+                <div class="lesson-example">
+                "Solve this problem step by step: If a store has 50 items and sells 12 items per day, how many days until 80% of items are sold? Show your work."
+                </div>
+
+                <h3>📚 Technique 2: Few-Shot Learning</h3>
+                <p>Provide examples before asking for the actual task.</p>
+                <div class="lesson-example">
+                "Here are examples of good code comments:
+                // Add 10 to the value (GOOD)
+                // Variable assignment (BAD - not descriptive)
+                
+                Now comment this code:
+                x = user_age + 18"
+                </div>
+
+                <h3>👤 Technique 3: Role-Based Prompting</h3>
+                <p>Assign the model a specific role or persona.</p>
+                <div class="lesson-example">
+                "You are a security expert. Identify vulnerabilities in this code: [code snippet]"
+                </div>
+
+                <h3>🎯 Technique 4: Constraint-Based Prompting</h3>
+                <p>Explicitly state constraints and boundaries.</p>
+                <div class="lesson-example">
+                "Write a function with these constraints:
+                - Must handle null values
+                - Time complexity must be O(n)
+                - Memory usage must be less than 10MB"
+                </div>
+
+                <h3>✅ Technique 5: Validation Prompting</h3>
+                <p>Ask the model to validate or check its own response.</p>
+                <div class="lesson-example">
+                "Write a SQL query to find users with age > 21. Then verify it handles NULL values correctly."
+                </div>
+            `,
+            '5. Prompt Testing Best Practices': `
+                <h3>Industry Standards</h3>
+
+                <h3>1. Test Systematically</h3>
+                <ul>
+                    <li>Create a test matrix covering different scenarios</li>
+                    <li>Test happy path, edge cases, and error cases</li>
+                    <li>Document all test cases and results</li>
+                </ul>
+
+                <h3>2. Version Your Prompts</h3>
+                <p>Keep track of prompt variations and their results:</p>
+                <div class="lesson-example">
+                v1.0: Basic code generation prompt
+                v1.1: Added error handling requirement
+                v1.2: Added performance constraint
+                </div>
+
+                <h3>3. Use Metrics</h3>
+                <ul>
+                    <li>Correctness: Is the response accurate?</li>
+                    <li>Completeness: Does it address all requirements?</li>
+                    <li>Clarity: Is it understandable?</li>
+                    <li>Efficiency: Is the solution optimal?</li>
+                </ul>
+
+                <h3>4. Iterate and Improve</h3>
+                <p>If responses aren't satisfactory:</p>
+                <ul>
+                    <li>Refine your prompt for clarity</li>
+                    <li>Provide more context or examples</li>
+                    <li>Break down complex tasks</li>
+                    <li>Test multiple variations</li>
+                </ul>
+
+                <h3>5. Document Your Findings</h3>
+                <p>Maintain a test report with:</p>
+                <ul>
+                    <li>Prompt used</li>
+                    <li>Expected vs. actual results</li>
+                    <li>Pass/Fail status</li>
+                    <li>Observations and recommendations</li>
+                </ul>
+            `,
+            '6. Evaluating Prompt Responses': `
+                <h3>How to Judge AI Responses</h3>
+
+                <h3>1. Accuracy Assessment</h3>
+                <ul>
+                    <li>Is the factual information correct?</li>
+                    <li>Are calculations accurate?</li>
+                    <li>Is the logic sound?</li>
+                </ul>
+
+                <h3>2. Completeness Check</h3>
+                <div class="lesson-example">
+                Prompt: "List 3 testing strategies for AI models"
+                If response only lists 2: Incomplete ❌
+                </div>
+
+                <h3>3. Relevance Evaluation</h3>
+                <ul>
+                    <li>Does the response address the prompt?</li>
+                    <li>Is there unnecessary information?</li>
+                    <li>Is the focus aligned with requirements?</li>
+                </ul>
+
+                <h3>4. Quality Scoring</h3>
+                <div class="lesson-example">
+                Score 1-10:
+                1-3: Poor (incorrect, incomplete, irrelevant)
+                4-6: Fair (partially correct with issues)
+                7-8: Good (mostly correct with minor issues)
+                9-10: Excellent (accurate, complete, well-structured)
+                </div>
+
+                <h3>5. Red Flags to Watch For</h3>
+                <ul>
+                    <li>❌ Hallucinated information (made-up facts)</li>
+                    <li>❌ Off-topic responses</li>
+                    <li>❌ Contradictory statements</li>
+                    <li>❌ Incomplete answers</li>
+                    <li>❌ Overly verbose or unclear explanations</li>
+                </ul>
+
+                <h3>6. Comparative Evaluation</h3>
+                <p>Compare responses from different prompts to determine which is more effective:</p>
+                <div class="lesson-example">
+                Prompt A result: 7/10
+                Prompt B result: 9/10
+                Conclusion: Prompt B is more effective
+                </div>
+            `
+        };
+
+        const content = lessons[title] || '<p>Lesson content coming soon...</p>';
+        
+        document.getElementById('lesson-title').textContent = title;
+        document.getElementById('lesson-content').innerHTML = content;
+        document.getElementById('lesson-modal').classList.add('show');
+    }
+
+    function closeLesson() {
+        document.getElementById('lesson-modal').classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('lesson-modal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'lesson-modal') {
+            closeLesson();
+        }
+    });
+
+    async function evaluatePrompt() {
+        const prompt = document.getElementById('prompt-textarea').value.trim();
+        
+        if (!prompt) {
+            alert('Please write a prompt first!');
+            return;
+        }
+
+        const btnText = document.getElementById('btn-text');
+        const btnLoading = document.getElementById('btn-loading');
+        const feedbackBox = document.getElementById('feedback-box');
+
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-block';
+
+        const evaluationPrompt = `You are an expert in prompt engineering and AI testing. Evaluate this user's prompt and provide constructive feedback.
+
+User's Prompt:
+"${prompt}"
+
+Please evaluate based on these criteria:
+1. Clarity: Is it clear what the model should do?
+2. Specificity: Is it specific enough to guide the model?
+3. Context: Does it provide necessary context?
+4. Testing Value: Will it effectively test the model?
+5. Best Practices: Does it follow prompt engineering best practices?
+
+Provide your response in this exact format:
+SCORE: [number from 1-10]
+STRENGTHS: [list 2-3 main strengths]
+IMPROVEMENTS: [list 2-3 specific improvements]`;
+
+        try {
+            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{text: evaluationPrompt}]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 500
+                    }
+                })
+            });
+
+            const data = await response.json();
+            const feedback = data.candidates[0].content.parts[0].text;
+            
+            // Parse the feedback
+            const scoreMatch = feedback.match(/SCORE:\s*(\d+(?:\.\d+)?)/);
+            const strengthsMatch = feedback.match(/STRENGTHS:\s*(.+?)(?=IMPROVEMENTS:|$)/s);
+            const improvementsMatch = feedback.match(/IMPROVEMENTS:\s*(.+?)$/s);
+
+            document.getElementById('score').textContent = scoreMatch ? `${scoreMatch[1]}/10` : '7/10';
+            document.getElementById('strengths-text').textContent = strengthsMatch ? strengthsMatch[1].trim() : 'Your prompt shows good structure.';
+            document.getElementById('improvements-text').textContent = improvementsMatch ? improvementsMatch[1].trim() : 'Consider adding more specificity.';
+
+            feedbackBox.classList.add('show');
+        } catch (error) {
+            alert('Error evaluating prompt: ' + error.message);
+        } finally {
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+        }
+    }
+
+    const quizQuestions = [
+        {
+            question: "What is the primary goal of prompt testing?",
+            options: [
+                "To write perfect English",
+                "To evaluate how well an AI model responds to different inputs",
+                "To test the model's grammar",
+                "To measure typing speed"
+            ],
+            correct: 1
+        },
+        {
+            question: "Which characteristic is most important in a good prompt?",
+            options: [
+                "Being as long as possible",
+                "Using complex vocabulary",
+                "Being clear and specific about what you want",
+                "Including emotional language"
+            ],
+            correct: 2
+        },
+        {
+            question: "What is 'few-shot learning' in prompting?",
+            options: [
+                "Asking questions quickly",
+                "Providing examples to guide the model's responses",
+                "Using very short prompts",
+                "Testing the model only twice"
+            ],
+            correct: 1
+        },
+        {
+            question: "Which prompt would better test an AI model's coding ability?",
+            options: [
+                "Write code",
+                "Write Python code to calculate the sum of a list, with error handling for non-numeric values",
+                "Code test",
+                "Is this code good?"
+            ],
+            correct: 1
+        },
+        {
+            question: "What should you do if an AI model gives an unexpected response?",
+            options: [
+                "Assume the model is broken",
+                "Immediately report it as a bug",
+                "Analyze the prompt to understand what caused the response, then refine it",
+                "Try the exact same prompt again"
+            ],
+            correct: 2
+        }
+    ];
+
+    function initializeQuiz() {
+        const quizContent = document.getElementById('quiz-content');
+        if (quizContent.innerHTML) return;
+
+        let html = '';
+        quizQuestions.forEach((q, idx) => {
+            html += `
+            <div class="question-card">
+                <h4>Q${idx + 1}: ${q.question}</h4>
+                <div class="options">
+                    ${q.options.map((opt, i) => `
+                        <label class="option">
+                            <input type="radio" name="q${idx}" value="${i}">
+                            <label>${opt}</label>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>`;
+        });
+
+        html += `<button class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>`;
+        html += `<div id="results-box" class="results-box"></div>`;
+
+        quizContent.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        quizQuestions.forEach((q, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            if (selected && parseInt(selected.value) === q.correct) {
+                score++;
+            }
+        });
+
+        const total = quizQuestions.length;
+        const percentage = Math.round((score / total) * 100);
+        const resultsBox = document.getElementById('results-box');
+
+        let message = '';
+        if (percentage === 100) message = 'Perfect! You\'re a prompt testing expert! 🎉';
+        else if (percentage >= 80) message = 'Excellent! You have a strong understanding of prompt testing! 👍';
+        else if (percentage >= 60) message = 'Good effort! Review the material and try again. 📚';
+        else message = 'Keep learning! Go through the lessons and practice more. 💪';
+
+        resultsBox.innerHTML = `
+            <div class="results-score">${score}/${total}</div>
+            <div class="results-message">${message}</div>
+            <p>You scored ${percentage}%</p>
+        `;
+        resultsBox.classList.add('show');
+    }
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@
     <div class="logo">AI Quality Lab</div>
     <nav>
         <a href="index.html">Home</a>
+        <a href="learn-prompt-testing.html">Learn</a>
         <a href="about.html">About</a>
         <a href="python-tutorials/python-basics.html">Python</a>
         <a href="ai-testing/readme.html">AI Testing</a>
@@ -48,8 +49,30 @@
     </div>
 </main>
 
+<!-- AI Testing Chatbot Widget -->
+<section class="chatbot-section">
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h3>💬 AI Testing Assistant</h3>
+            <p>Ask me about AI testing, automation & best practices</p>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Type your question..." 
+                class="chat-input"
+            >
+            <button id="send-btn" class="chat-send-btn">Send</button>
+        </div>
+    </div>
+</section>
+
 <footer>
     <p>&copy; 2025 AI Quality Lab</p>
 </footer>
+
+<script src="chatbot.js"></script>
 </body>
 </html>
